@@ -40,6 +40,12 @@ export default async function DashboardPage() {
         >
           Gérer les classes →
         </Link>
+        <Link
+          href="/invoices"
+          className="inline-block rounded-lg border px-4 py-2 text-sm font-medium"
+        >
+          Gérer les factures →
+        </Link>
       </div>
     </main>
   );
