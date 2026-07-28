@@ -46,6 +46,12 @@ export default async function DashboardPage() {
         >
           Gérer les factures →
         </Link>
+        <Link
+  href="/teachers"
+  className="inline-block rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white"
+>
+  Gérer les enseignants →
+</Link>
       </div>
     </main>
   );
