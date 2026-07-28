@@ -223,3 +223,17 @@ export const invoicesRelations = relations(invoices, ({ one, many }) => ({
 export const paymentsRelations = relations(payments, ({ one }) => ({
   invoice: one(invoices, { fields: [payments.invoiceId], references: [invoices.id] }),
 }));
+
+export const teachers = pgTable("teachers", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  schoolId: uuid("school_id").notNull().references(() => schools.id, { onDelete: "cascade" }),
+  fullName: text("full_name").notNull(),
+  subject: text("subject"),
+  phone: text("phone"),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+export const teachersRelations = relations(teachers, ({ one }) => ({
+  school: one(schools, { fields: [teachers.schoolId], references: [schools.id] }),
+}));
