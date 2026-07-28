@@ -8,15 +8,15 @@ Dernière mise à jour : 28/07/2026
 - Onboarding école : fonctionnel
 - Students : CRUD + page + RLS ok
 - Classes : CRUD + page + RLS ok
-- Teachers : table + RLS + page + formulaire ok — lien manquant dans la nav (en cours)
-- Grades, Invoices, Payments : RLS en place, pages pas encore créées
+- Teachers : table + RLS + page + formulaire ok
+- Invoices + Payments : CRUD + versements (Wave/Orange/MTN/Moov) + statut dynamique ok
+- Grades : CRUD complet (liste, création, modification, suppression) + isolation école ok
 
 ## À faire (ordre)
-1. Ajouter lien nav "Enseignants"
-2. app/grades — page + formulaire (pattern students/page.tsx)
-3. app/invoices + app/payments — page + enregistrement paiement + reçu
-4. Dashboard : remplacer les cartes mockées par vrais compteurs
-5. Habillage visuel (couleurs forest/amber de la maquette /preview)
+1. Reçu imprimable sur versement (`/invoices/[id]/receipt` ou par paymentId)
+2. Dashboard : remplacer les liens basiques par vrais compteurs (élèves, classes, enseignants, notes, solde factures)
+3. Habillage visuel (couleurs forest/amber de la maquette /preview)
+4. Bulletins (agrégation notes par élève / période) — optionnel MVP si temps
 
 ## Conventions
 Voir AGENTS.md — RLS patterns, MVP scope, Next.js 16 proxy.ts
