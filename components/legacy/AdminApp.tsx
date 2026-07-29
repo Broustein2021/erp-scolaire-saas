@@ -1017,7 +1017,7 @@ function Sidebar({
               className="text-xs mt-0.5 truncate"
               style={{ color: "rgba(255,255,255,0.45)" }}
             >
-              Ecole Primaire D'Abidjan
+              Ecole Primaire D&apos;Abidjan
             </div>
           </div>
         )}
@@ -1241,7 +1241,7 @@ function DashboardView({
             className="text-sm mt-1"
             style={{ color: "#6B6557" }}
           >
-            École Primaire d'Abidjan — Janvier 2026
+            École Primaire d&apos;Abidjan — Janvier 2026
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -1366,6 +1366,7 @@ function DashboardView({
                 axisLine={false}
                 tickLine={false}
               />
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               <Tooltip content={customTooltip as any} />
               <Bar
                 dataKey="montant"
@@ -1454,6 +1455,7 @@ function DashboardView({
                 axisLine={false}
                 tickLine={false}
               />
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               <Tooltip content={customTooltip as any} />
               <Area
                 type="monotone"
@@ -1704,14 +1706,6 @@ function StudentsView({
 
   const [search, setSearch] = useState("");
   const [filterGroup, setFilterGroup] = useState<string>("all");
-
-  if (loading) {
-    return (
-      <div className="p-6 text-sm" style={{ color: "#9B9589" }}>
-        Chargement des élèves…
-      </div>
-    );
-  }
 
   const groups = [
     { id: "all", label: "Tous" },
@@ -2077,14 +2071,6 @@ function StudentLedgerView({
   setScreen: (s: Screen) => void;
 }) {
 
-
-  if (loading) {
-    return (
-      <div className="p-6 text-sm" style={{ color: "#9B9589" }}>
-        Chargement…
-      </div>
-    );
-  }
 
   const student = STUDENTS.find((s) => s.id === studentId);
   if (!student) return null;

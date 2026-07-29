@@ -301,7 +301,7 @@ export function ParentLoginScreen({ onLogin, onBack }: { onLogin: () => void; on
           className="flex items-center gap-1.5 text-sm"
           style={{ color: "#9B9589" }}
         >
-          <X size={14} /> Retour à l'administration
+          <X size={14} /> Retour à l&apos;administration
         </button>
       </div>
 
@@ -318,7 +318,7 @@ export function ParentLoginScreen({ onLogin, onBack }: { onLogin: () => void; on
             Portail Parents
           </h1>
           <p className="text-sm mt-1" style={{ color: "#6B6557" }}>
-            École Sainte-Marie d'Abidjan
+            École Sainte-Marie d&apos;Abidjan
           </p>
           <p className="text-xs mt-0.5" style={{ color: "#9B9589" }}>
             Année scolaire 2025–2026
@@ -435,13 +435,13 @@ export function ParentLoginScreen({ onLogin, onBack }: { onLogin: () => void; on
                 Mot de passe oublié
               </h2>
               <p className="text-sm mb-5" style={{ color: "#9B9589" }}>
-                Contactez la direction de l'école pour réinitialiser votre accès.
+                Contactez la direction de l&apos;école pour réinitialiser votre accès.
               </p>
               <div
                 className="p-4 rounded-2xl text-sm"
                 style={{ background: GRN_FAINT, color: GRN }}
               >
-                <div className="font-bold mb-1">École Sainte-Marie d'Abidjan</div>
+                <div className="font-bold mb-1">École Sainte-Marie d&apos;Abidjan</div>
                 <div>📞 27 22 47 85</div>
                 <div>📧 direction@ste-marie-abidjan.ci</div>
                 <div className="text-xs mt-2" style={{ color: "#5A8A70" }}>
@@ -463,11 +463,11 @@ export function ParentLoginScreen({ onLogin, onBack }: { onLogin: () => void; on
 // ── Child Selector Dropdown ──────────────────────────────────────
 
 function ChildSelector({
-  children,
+  childrenList,
   selected,
   onSelect,
 }: {
-  children: ChildPortalData[];
+  childrenList: ChildPortalData[];
   selected: ChildPortalData;
   onSelect: (c: ChildPortalData) => void;
 }) {
@@ -516,7 +516,7 @@ function ChildSelector({
                 Mes enfants
               </span>
             </div>
-            {children.map((c) => (
+            {childrenList.map((c) => (
               <button
                 key={c.studentId}
                 onClick={() => { onSelect(c); setOpen(false); }}
@@ -1059,13 +1059,13 @@ function ParentAcademics({ child }: { child: ChildPortalData }) {
           style={{ borderColor: "#E8E2D6" }}
         >
           <div className="text-sm font-bold mb-3" style={{ color: "#1A1A1A" }}>
-            Appréciation de l'enseignant·e
+            Appréciation de l&apos;enseignant·e
           </div>
           <blockquote
             className="text-sm leading-relaxed pl-3 border-l-2"
             style={{ color: "#6B6557", borderColor: GRN }}
           >
-            "{child.teacherRemark}"
+            &quot;{child.teacherRemark}&quot;
           </blockquote>
           <div className="text-xs mt-2" style={{ color: "#9B9589" }}>
             Mme Traoré Salimata · Maîtresse CP1
@@ -1344,7 +1344,7 @@ function ParentPayments({ child }: { child: ChildPortalData }) {
               className="mt-3 p-3 rounded-xl text-xs"
               style={{ background: "#FEE2E2", color: "#991B1B" }}
             >
-              La cantine de Janvier n'est pas encore réglée. Veuillez contacter la direction.
+              La cantine de Janvier n&apos;est pas encore réglée. Veuillez contacter la direction.
             </div>
           )}
         </div>
@@ -1480,7 +1480,7 @@ function ParentLife({ child }: { child: ChildPortalData }) {
             >
               <div className="text-3xl mb-2">⭐</div>
               <p className="text-sm" style={{ color: "#9B9589" }}>
-                {child.firstName} n'est inscrit·e dans aucune activité pour le moment.
+                {child.firstName} n&apos;est inscrit·e dans aucune activité pour le moment.
               </p>
             </div>
           ) : (
@@ -1637,7 +1637,7 @@ export function ParentPortalApp({ onLogout }: { onLogout: () => void }) {
           {/* Child selector */}
           <div className="flex-1">
             <ChildSelector
-              children={PARENT_CHILDREN}
+              childrenList={PARENT_CHILDREN}
               selected={selectedChild}
               onSelect={(c) => { setSelectedChild(c); setScreen("home"); }}
             />

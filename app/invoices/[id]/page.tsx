@@ -134,7 +134,13 @@ export default async function InvoiceDetailPage({
                   <td className="px-4 py-2 font-mono">{fmt(Number(p.amount))}</td>
                   <td className="px-4 py-2">{methodLabel(p.method)}</td>
                   <td className="px-4 py-2 text-zinc-500">{p.reference ?? "—"}</td>
-                  <td className="px-4 py-2 text-right">
+                  <td className="px-4 py-2 text-right space-x-3">
+                    <Link
+                      href={`/invoices/${row.id}/receipt/${p.id}`}
+                      className="text-zinc-700 underline"
+                    >
+                      Reçu
+                    </Link>
                     <DeletePaymentButton invoiceId={row.id} paymentId={p.id} />
                   </td>
                 </tr>
