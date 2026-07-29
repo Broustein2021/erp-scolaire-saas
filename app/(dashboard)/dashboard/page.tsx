@@ -1,138 +1,215 @@
 import Link from "next/link";
-import { eq, sql } from "drizzle-orm";
 import { getCurrentProfile } from "@/lib/auth/profile";
-import { logout } from "@/app/login/actions";
-import { db } from "@/lib/db";
-import { students, classes, teachers, grades, invoices, payments } from "@/lib/db/schema";
+import { getDashboardData } from "@/lib/dashboard/queries";
+import { PAYMENT_METHODS } from "@/lib/constants";
+import {
+  RevenueByClassChart,
+  MonthlyRevenueChart,
+} from "@/components/dashboard/dashboard-charts";
 
 function fmt(n: number) {
   return new Intl.NumberFormat("fr-FR").format(n) + " FCFA";
 }
 
+function methodLabel(value: string) {
+  return PAYMENT_METHODS.find((m) => m.value === value)?.label ?? value;
+}
+
 export default async function DashboardPage() {
   const profile = await getCurrentProfile();
-  const schoolId = profile.schoolId;
+  const data = await getDashboardData(profile.schoolId);
 
-  let studentCount = 0;
-  let classCount = 0;
-  let teacherCount = 0;
-  let gradeCount = 0;
-  let totalOutstanding = 0;
-  let invoiceCount = 0;
-
-  if (schoolId) {
-    const [studentRows, classRows, teacherRows, gradeRows, invoiceRows] = await Promise.all([
-      db.select({ count: sql<number>`count(*)`.mapWith(Number) }).from(students).where(eq(students.schoolId, schoolId)),
-      db.select({ count: sql<number>`count(*)`.mapWith(Number) }).from(classes).where(eq(classes.schoolId, schoolId)),
-      db.select({ count: sql<number>`count(*)`.mapWith(Number) }).from(teachers).where(eq(teachers.schoolId, schoolId)),
-      db
-        .select({ count: sql<number>`count(*)`.mapWith(Number) })
-        .from(grades)
-        .innerJoin(students, eq(students.id, grades.studentId))
-        .where(eq(students.schoolId, schoolId)),
-      db
-        .select({ id: invoices.id, amount: invoices.amount })
-        .from(invoices)
-        .innerJoin(students, eq(students.id, invoices.studentId))
-        .where(eq(students.schoolId, schoolId)),
-    ]);
-
-    studentCount = studentRows[0]?.count ?? 0;
-    classCount = classRows[0]?.count ?? 0;
-    teacherCount = teacherRows[0]?.count ?? 0;
-    gradeCount = gradeRows[0]?.count ?? 0;
-    invoiceCount = invoiceRows.length;
-
-    const paidByInvoice = new Map<string, number>();
-    if (invoiceRows.length > 0) {
-      const paymentRows = await db
-        .select({ invoiceId: payments.invoiceId, amount: payments.amount })
-        .from(payments);
-      for (const p of paymentRows) {
-        paidByInvoice.set(p.invoiceId, (paidByInvoice.get(p.invoiceId) ?? 0) + Number(p.amount));
-      }
-    }
-
-    totalOutstanding = invoiceRows.reduce((acc, r) => {
-      const paid = paidByInvoice.get(r.id) ?? 0;
-      return acc + Math.max(Number(r.amount) - paid, 0);
-    }, 0);
-  }
-
-  const metrics = [
-    { label: "Élèves inscrits", value: String(studentCount), href: "/students" },
-    { label: "Classes", value: String(classCount), href: "/classes" },
-    { label: "Enseignants", value: String(teacherCount), href: "/teachers" },
-    { label: "Notes enregistrées", value: String(gradeCount), href: "/grades" },
+  const kpis = [
     {
-      label: "Factures en attente",
-      value: fmt(totalOutstanding),
-      sub: `sur ${invoiceCount} facture${invoiceCount > 1 ? "s" : ""}`,
+      label: "Élèves inscrits",
+      value: String(data.studentCount),
+      href: "/students",
+      accent: "bg-[#EEF4F1] text-[#1C3D2F]",
+    },
+    {
+      label: "Encaissé (mois)",
+      value: fmt(data.monthCollected),
       href: "/invoices",
+      accent: "bg-[#FEF5E4] text-[#D9820C]",
+    },
+    {
+      label: "Solde en attente",
+      value: fmt(data.outstanding),
+      href: "/invoices",
+      accent: data.outstanding > 0 ? "bg-red-50 text-red-700" : "bg-green-50 text-green-700",
+    },
+    {
+      label: "Retards",
+      value: String(data.overdueCount),
+      href: "/invoices",
+      accent: data.overdueCount > 0 ? "bg-red-50 text-red-700" : "bg-zinc-100 text-zinc-700",
     },
   ];
 
   return (
-    <main className="mx-auto max-w-4xl p-8 space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Tableau de bord</h1>
-        <form action={logout}>
-          <button className="text-sm text-zinc-500 underline">Se déconnecter</button>
-        </form>
-      </div>
-
-      <div className="rounded-lg border p-4 text-sm space-y-1">
-        <p>
-          <span className="text-zinc-500">Nom :</span> {profile.fullName}
-        </p>
-        <p>
-          <span className="text-zinc-500">Organisation :</span> {profile.organizationId}
-        </p>
-        <p>
-          <span className="text-zinc-500">École :</span> {schoolId ?? "—"}
-        </p>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-        {metrics.map((m) => (
+    <main className="mx-auto max-w-6xl p-6 md:p-8 space-y-8">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-xl font-semibold text-[#1C3D2F]">Tableau de bord</h1>
+          <p className="text-sm text-zinc-500 mt-1">
+            {data.schoolName ?? "École non rattachée"}
+            {data.schoolCity ? ` · ${data.schoolCity}` : ""}
+          </p>
+          <p className="text-sm text-zinc-500">Connecté : {profile.fullName}</p>
+        </div>
+        <div className="flex flex-wrap gap-2">
           <Link
-            key={m.label}
-            href={m.href}
-            className="rounded-lg border p-4 transition-colors hover:bg-zinc-50"
+            href="/students/new"
+            className="rounded-lg bg-[#1C3D2F] px-4 py-2 text-sm font-medium text-white"
           >
-            <div className="text-xs text-zinc-500">{m.label}</div>
-            <div className="mt-1 font-mono text-xl font-semibold">{m.value}</div>
-            {m.sub && <div className="mt-0.5 text-xs text-zinc-400">{m.sub}</div>}
+            + Nouvel élève
           </Link>
-        ))}
+          <Link
+            href="/invoices/new"
+            className="rounded-lg border border-[#1C3D2F]/20 bg-white px-4 py-2 text-sm font-medium text-[#1C3D2F]"
+          >
+            + Facture
+          </Link>
+        </div>
       </div>
 
-      <div className="flex flex-wrap gap-3">
-        <Link
-          href="/students/new"
-          className="inline-block rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white"
-        >
-          + Nouvel élève
-        </Link>
-        <Link
-          href="/invoices/new"
-          className="inline-block rounded-lg border px-4 py-2 text-sm font-medium"
-        >
-          + Nouvelle facture
-        </Link>
-        <Link
-          href="/grades/new"
-          className="inline-block rounded-lg border px-4 py-2 text-sm font-medium"
-        >
-          + Nouvelle note
-        </Link>
-        <Link
-          href="/teachers/new"
-          className="inline-block rounded-lg border px-4 py-2 text-sm font-medium"
-        >
-          + Nouvel enseignant
-        </Link>
-      </div>
+      {!profile.schoolId ? (
+        <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          Aucune école rattachée. Termine l&apos;onboarding pour voir les indicateurs.
+        </p>
+      ) : (
+        <>
+          {/* KPIs */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {kpis.map((k) => (
+              <Link
+                key={k.label}
+                href={k.href}
+                className={`rounded-2xl border p-4 space-y-1 transition hover:shadow-sm ${k.accent}`}
+              >
+                <div className="text-xs font-medium opacity-70">{k.label}</div>
+                <div className="text-lg font-semibold font-mono tracking-tight">{k.value}</div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Mini stats */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 rounded-2xl border bg-white p-4 text-sm">
+            <div>
+              <div className="text-xs text-zinc-500">Classes</div>
+              <div className="font-mono font-semibold">{data.classCount}</div>
+            </div>
+            <div>
+              <div className="text-xs text-zinc-500">Enseignants</div>
+              <div className="font-mono font-semibold">{data.teacherCount}</div>
+            </div>
+            <div>
+              <div className="text-xs text-zinc-500">Notes</div>
+              <div className="font-mono font-semibold">{data.gradeCount}</div>
+            </div>
+            <div>
+              <div className="text-xs text-zinc-500">Total encaissé</div>
+              <div className="font-mono font-semibold">{fmt(data.totalCollected)}</div>
+            </div>
+          </div>
+
+          {/* Graphiques */}
+          <div className="grid lg:grid-cols-2 gap-6">
+            <section className="rounded-2xl border bg-white p-5 space-y-3">
+              <h2 className="text-sm font-semibold text-[#1C3D2F]">Revenus par classe</h2>
+              <RevenueByClassChart data={data.revenueByClass} />
+            </section>
+            <section className="rounded-2xl border bg-white p-5 space-y-3">
+              <h2 className="text-sm font-semibold text-[#1C3D2F]">
+                Flux mensuel — Revenus
+              </h2>
+              <p className="text-xs text-zinc-400">
+                Courbe des encaissements (pas de dépenses dans le schéma actuel).
+              </p>
+              <MonthlyRevenueChart data={data.monthlyRevenue} />
+            </section>
+          </div>
+
+          {/* Listes */}
+          <div className="grid lg:grid-cols-2 gap-6">
+            <section className="rounded-2xl border bg-white overflow-hidden">
+              <div className="border-b px-5 py-3 flex items-center justify-between">
+                <h2 className="text-sm font-semibold text-[#1C3D2F]">Transactions récentes</h2>
+                <Link href="/invoices" className="text-xs text-zinc-500 underline">
+                  Voir tout
+                </Link>
+              </div>
+              {data.recentPayments.length === 0 ? (
+                <p className="px-5 py-6 text-sm text-zinc-500">Aucun versement enregistré.</p>
+              ) : (
+                <ul className="divide-y text-sm">
+                  {data.recentPayments.map((p) => (
+                    <li key={p.id} className="px-5 py-3 flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <div className="font-medium truncate">{p.studentName}</div>
+                        <div className="text-xs text-zinc-500 truncate">
+                          {p.invoiceLabel} · {methodLabel(p.method)}
+                        </div>
+                        <div className="text-xs text-zinc-400">
+                          {new Date(p.paidAt).toLocaleDateString("fr-FR")}
+                        </div>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <div className="font-mono font-semibold text-green-700">
+                          +{fmt(p.amount)}
+                        </div>
+                        <Link
+                          href={`/invoices/${p.invoiceId}/receipt/${p.id}`}
+                          className="text-xs text-zinc-500 underline"
+                        >
+                          Reçu
+                        </Link>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+
+            <section className="rounded-2xl border bg-white overflow-hidden">
+              <div className="border-b px-5 py-3 flex items-center justify-between">
+                <h2 className="text-sm font-semibold text-[#1C3D2F]">Alertes — retards</h2>
+                {data.overdueCount > 0 && (
+                  <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700">
+                    {data.overdueCount}
+                  </span>
+                )}
+              </div>
+              {data.overdueInvoices.length === 0 ? (
+                <p className="px-5 py-6 text-sm text-zinc-500">Aucune facture en retard.</p>
+              ) : (
+                <ul className="divide-y text-sm">
+                  {data.overdueInvoices.map((inv) => (
+                    <li key={inv.id} className="px-5 py-3 flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <div className="font-medium truncate">{inv.studentName}</div>
+                        <div className="text-xs text-zinc-500 truncate">{inv.label}</div>
+                        <div className="text-xs text-red-600">Échéance : {inv.dueDate}</div>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <div className="font-mono font-semibold text-red-700">
+                          {fmt(Math.max(inv.amount - inv.paid, 0))}
+                        </div>
+                        <Link
+                          href={`/invoices/${inv.id}`}
+                          className="text-xs text-zinc-500 underline"
+                        >
+                          Voir
+                        </Link>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          </div>
+        </>
+      )}
     </main>
   );
 }
