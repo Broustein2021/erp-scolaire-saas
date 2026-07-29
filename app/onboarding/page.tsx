@@ -17,7 +17,7 @@ export default async function OnboardingPage() {
   if (existing) redirect("/dashboard");
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-zinc-50 p-4">
+    <main className="flex min-h-screen items-center justify-center bg-cream p-4">
       <OnboardingForm email={user.email ?? ""} />
     </main>
   );

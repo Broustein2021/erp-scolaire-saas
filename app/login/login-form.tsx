@@ -16,10 +16,10 @@ export function LoginForm() {
           if (result?.error) setError(result.error);
         });
       }}
-      className="w-full max-w-sm space-y-4 rounded-2xl border bg-white p-8 shadow-sm"
+      className="w-full max-w-sm space-y-4 rounded-2xl border border-forest-faint bg-white p-8 shadow-sm"
     >
       <div>
-        <h1 className="text-xl font-semibold">Connexion</h1>
+        <h1 className="text-xl font-semibold text-forest-dark">Connexion</h1>
         <p className="text-sm text-zinc-500">Espace de gestion scolaire</p>
       </div>
 
@@ -30,7 +30,7 @@ export function LoginForm() {
       )}
 
       <div className="space-y-1">
-        <label htmlFor="email" className="text-sm font-medium">
+        <label htmlFor="email" className="text-sm font-medium text-forest-dark">
           Email
         </label>
         <input
@@ -38,12 +38,12 @@ export function LoginForm() {
           name="email"
           type="email"
           required
-          className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+          className="w-full rounded-lg border border-forest-faint px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest-light"
         />
       </div>
 
       <div className="space-y-1">
-        <label htmlFor="password" className="text-sm font-medium">
+        <label htmlFor="password" className="text-sm font-medium text-forest-dark">
           Mot de passe
         </label>
         <input
@@ -51,14 +51,14 @@ export function LoginForm() {
           name="password"
           type="password"
           required
-          className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+          className="w-full rounded-lg border border-forest-faint px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest-light"
         />
       </div>
 
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-lg bg-zinc-900 py-2.5 text-sm font-medium text-white disabled:opacity-60"
+        className="w-full rounded-lg bg-forest py-2.5 text-sm font-medium text-white transition-colors hover:bg-forest-dark disabled:opacity-60"
       >
         {pending ? "Connexion..." : "Se connecter"}
       </button>

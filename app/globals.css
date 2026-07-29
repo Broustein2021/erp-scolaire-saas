@@ -4,6 +4,20 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ── Palette maquette (forest / amber / cream) ── ajoutée sans toucher au thème shadcn existant */
+@theme {
+  --color-forest: #1c3d2f;
+  --color-forest-dark: #132b20;
+  --color-forest-mid: #1f4534;
+  --color-forest-light: #2d6a4f;
+  --color-forest-faint: #eef4f1;
+  --color-amber: #d9820c;
+  --color-amber-light: #f59f2f;
+  --color-amber-faint: #fef5e4;
+  --color-cream: #f3efe6;
+  --color-cream-dark: #eae5d9;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

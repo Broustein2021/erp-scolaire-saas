@@ -30,10 +30,10 @@ export function OnboardingForm({ email }: { email: string }) {
           if (result?.error) setError(result.error);
         });
       }}
-      className="w-full max-w-lg space-y-6 rounded-2xl border bg-white p-8 shadow-sm"
+      className="w-full max-w-lg space-y-6 rounded-2xl border border-forest-faint bg-white p-8 shadow-sm"
     >
       <div>
-        <h1 className="text-xl font-semibold">Configurer ton établissement</h1>
+        <h1 className="text-xl font-semibold text-forest-dark">Configurer ton établissement</h1>
         <p className="text-sm text-zinc-500">
           Dernière étape avant d&apos;accéder à ton tableau de bord.
         </p>
@@ -44,10 +44,10 @@ export function OnboardingForm({ email }: { email: string }) {
       )}
 
       <fieldset className="space-y-4">
-        <legend className="text-sm font-semibold text-zinc-700">Organisation</legend>
+        <legend className="text-sm font-semibold text-forest-mid">Organisation</legend>
 
         <div className="space-y-1">
-          <label htmlFor="orgName" className="text-sm font-medium">
+          <label htmlFor="orgName" className="text-sm font-medium text-forest-dark">
             Nom de l&apos;organisation / du groupe scolaire
           </label>
           <input
@@ -55,19 +55,19 @@ export function OnboardingForm({ email }: { email: string }) {
             name="orgName"
             required
             placeholder="Ex: Groupe Scolaire Les Palmiers"
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+            className="w-full rounded-lg border border-forest-faint px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest-light"
           />
         </div>
 
         <div className="space-y-1">
-          <label htmlFor="plan" className="text-sm font-medium">
+          <label htmlFor="plan" className="text-sm font-medium text-forest-dark">
             Plan
           </label>
           <select
             id="plan"
             name="plan"
             defaultValue="free"
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+            className="w-full rounded-lg border border-forest-faint px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest-light"
           >
             {PLANS.map((p) => (
               <option key={p.value} value={p.value}>
@@ -79,10 +79,10 @@ export function OnboardingForm({ email }: { email: string }) {
       </fieldset>
 
       <fieldset className="space-y-4">
-        <legend className="text-sm font-semibold text-zinc-700">Établissement</legend>
+        <legend className="text-sm font-semibold text-forest-mid">Établissement</legend>
 
         <div className="space-y-1">
-          <label htmlFor="schoolName" className="text-sm font-medium">
+          <label htmlFor="schoolName" className="text-sm font-medium text-forest-dark">
             Nom de l&apos;établissement
           </label>
           <input
@@ -90,20 +90,20 @@ export function OnboardingForm({ email }: { email: string }) {
             name="schoolName"
             required
             placeholder="Ex: École Les Palmiers - Cocody"
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+            className="w-full rounded-lg border border-forest-faint px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest-light"
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-1">
-            <label htmlFor="schoolType" className="text-sm font-medium">
+            <label htmlFor="schoolType" className="text-sm font-medium text-forest-dark">
               Type
             </label>
             <select
               id="schoolType"
               name="schoolType"
               defaultValue="primaire"
-              className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+              className="w-full rounded-lg border border-forest-faint px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest-light"
             >
               {SCHOOL_TYPES.map((t) => (
                 <option key={t.value} value={t.value}>
@@ -114,24 +114,24 @@ export function OnboardingForm({ email }: { email: string }) {
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="city" className="text-sm font-medium">
+            <label htmlFor="city" className="text-sm font-medium text-forest-dark">
               Ville
             </label>
             <input
               id="city"
               name="city"
               placeholder="Ex: Abidjan"
-              className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+              className="w-full rounded-lg border border-forest-faint px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest-light"
             />
           </div>
         </div>
       </fieldset>
 
       <fieldset className="space-y-4">
-        <legend className="text-sm font-semibold text-zinc-700">Ton profil (administrateur)</legend>
+        <legend className="text-sm font-semibold text-forest-mid">Ton profil (administrateur)</legend>
 
         <div className="space-y-1">
-          <label htmlFor="fullName" className="text-sm font-medium">
+          <label htmlFor="fullName" className="text-sm font-medium text-forest-dark">
             Nom complet
           </label>
           <input
@@ -139,16 +139,16 @@ export function OnboardingForm({ email }: { email: string }) {
             name="fullName"
             required
             placeholder="Ex: Marie Brou"
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+            className="w-full rounded-lg border border-forest-faint px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest-light"
           />
         </div>
 
         <div className="space-y-1">
-          <label className="text-sm font-medium">Email</label>
+          <label className="text-sm font-medium text-forest-dark">Email</label>
           <input
             disabled
             value={email}
-            className="w-full rounded-lg border bg-zinc-50 px-3 py-2 text-sm text-zinc-500"
+            className="w-full rounded-lg border border-forest-faint bg-cream px-3 py-2 text-sm text-zinc-500"
           />
         </div>
       </fieldset>
@@ -156,7 +156,7 @@ export function OnboardingForm({ email }: { email: string }) {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-lg bg-zinc-900 py-2.5 text-sm font-medium text-white disabled:opacity-60"
+        className="w-full rounded-lg bg-amber py-2.5 text-sm font-medium text-white transition-colors hover:bg-amber-light disabled:opacity-60"
       >
         {pending ? "Création en cours..." : "Créer mon espace"}
       </button>
