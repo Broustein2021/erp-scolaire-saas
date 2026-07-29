@@ -10,6 +10,8 @@ import {
   UserCog,
   Wallet,
   BookOpen,
+  Calculator,
+  UserRound,
   Menu,
   X,
 } from "lucide-react";
@@ -21,6 +23,8 @@ const navItems = [
   { href: "/teachers", label: "Enseignants", icon: UserCog },
   { href: "/grades", label: "Notes", icon: BookOpen },
   { href: "/invoices", label: "Finance", icon: Wallet },
+  { href: "/comptable", label: "Comptable", icon: Calculator },
+  { href: "/parent", label: "Espace parent", icon: UserRound },
 ];
 
 export function Sidebar({ schoolName }: { schoolName: string }) {
