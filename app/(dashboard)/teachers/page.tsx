@@ -3,9 +3,11 @@ import { eq } from "drizzle-orm";
 import { getCurrentProfile } from "@/lib/auth/profile";
 import { db } from "@/lib/db";
 import { teachers } from "@/lib/db/schema";
+import { DeleteTeacherButton } from "./delete-button";
 
 export default async function TeachersPage() {
   const profile = await getCurrentProfile();
+
   const rows = profile.schoolId
     ? await db.select().from(teachers).where(eq(teachers.schoolId, profile.schoolId))
     : [];
@@ -24,7 +26,12 @@ export default async function TeachersPage() {
         <div className="overflow-hidden rounded-lg border">
           <table className="w-full text-sm">
             <thead className="bg-zinc-50 text-left text-zinc-500">
-              <tr><th className="px-4 py-2 font-medium">Nom</th><th className="px-4 py-2 font-medium">Matière</th><th className="px-4 py-2 font-medium">Téléphone</th></tr>
+              <tr>
+                <th className="px-4 py-2 font-medium">Nom</th>
+                <th className="px-4 py-2 font-medium">Matière</th>
+                <th className="px-4 py-2 font-medium">Téléphone</th>
+                <th className="px-4 py-2 font-medium"></th>
+              </tr>
             </thead>
             <tbody className="divide-y">
               {rows.map((t) => (
@@ -32,6 +39,12 @@ export default async function TeachersPage() {
                   <td className="px-4 py-2">{t.fullName}</td>
                   <td className="px-4 py-2 text-zinc-500">{t.subject ?? "—"}</td>
                   <td className="px-4 py-2 text-zinc-500">{t.phone ?? "—"}</td>
+                  <td className="px-4 py-2 text-right space-x-3">
+                    <Link href={`/teachers/${t.id}`} className="text-zinc-700 underline">
+                      Modifier
+                    </Link>
+                    <DeleteTeacherButton teacherId={t.id} />
+                  </td>
                 </tr>
               ))}
             </tbody>
