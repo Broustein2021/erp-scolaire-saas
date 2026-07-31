@@ -136,6 +136,12 @@ export default async function InvoiceDetailPage({
                   <td className="px-4 py-2 text-zinc-500">{p.reference ?? "—"}</td>
                   <td className="px-4 py-2 text-right space-x-3">
                     <Link
+                      href={`/invoices/${row.id}/payments/${p.id}/edit`}
+                      className="text-zinc-700 underline"
+                    >
+                      Modifier
+                    </Link>
+                    <Link
                       href={`/invoices/${row.id}/receipt/${p.id}`}
                       className="text-zinc-700 underline"
                     >

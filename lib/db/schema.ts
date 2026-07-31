@@ -237,3 +237,17 @@ export const teachers = pgTable("teachers", {
 export const teachersRelations = relations(teachers, ({ one }) => ({
   school: one(schools, { fields: [teachers.schoolId], references: [schools.id] }),
 }));
+
+export const feeStructures = pgTable("fee_structures", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  schoolId: uuid("school_id").notNull().references(() => schools.id, { onDelete: "cascade" }),
+  level: text("level").notNull(),
+  installmentLabel: text("installment_label").notNull(),
+  amount: numeric("amount", { precision: 12, scale: 2 }).notNull(),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+});
+
+export const feeStructuresRelations = relations(feeStructures, ({ one }) => ({
+  school: one(schools, { fields: [feeStructures.schoolId], references: [schools.id] }),
+}));

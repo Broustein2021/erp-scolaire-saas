@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { login } from "./actions";
 
 export function LoginForm() {
@@ -62,6 +63,13 @@ export function LoginForm() {
       >
         {pending ? "Connexion..." : "Se connecter"}
       </button>
+
+      <p className="text-center text-sm text-zinc-500">
+        Pas encore de compte ?{" "}
+        <Link href="/signup" className="font-medium text-forest underline">
+          Créer un compte
+        </Link>
+      </p>
     </form>
   );
 }

@@ -5,9 +5,17 @@ import { PAYMENT_METHODS } from "@/lib/constants";
 
 export function PaymentForm({
   maxAmount,
+  defaultValues,
+  submitLabel = "Enregistrer le versement",
   onSubmit,
 }: {
   maxAmount: number;
+  defaultValues?: {
+    amount: number;
+    method: string;
+    reference: string | null;
+  };
+  submitLabel?: string;
   onSubmit: (formData: FormData) => Promise<{ error?: string } | void>;
 }) {
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +35,6 @@ export function PaymentForm({
       {error && (
         <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
       )}
-
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1">
           <label htmlFor="amount" className="text-sm font-medium">
@@ -41,7 +48,7 @@ export function PaymentForm({
             max={maxAmount}
             step="1"
             required
-            defaultValue={maxAmount}
+            defaultValue={defaultValues?.amount ?? maxAmount}
             className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
           />
         </div>
@@ -53,7 +60,7 @@ export function PaymentForm({
             id="method"
             name="method"
             required
-            defaultValue=""
+            defaultValue={defaultValues?.method ?? ""}
             className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
           >
             <option value="" disabled>
@@ -67,7 +74,6 @@ export function PaymentForm({
           </select>
         </div>
       </div>
-
       <div className="space-y-1">
         <label htmlFor="reference" className="text-sm font-medium">
           Référence (optionnel)
@@ -76,16 +82,16 @@ export function PaymentForm({
           id="reference"
           name="reference"
           placeholder="ex: référence de transaction Wave"
+          defaultValue={defaultValues?.reference ?? ""}
           className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
         />
       </div>
-
       <button
         type="submit"
         disabled={pending}
         className="rounded-lg bg-zinc-900 px-4 py-2.5 text-sm font-medium text-white disabled:opacity-60"
       >
-        {pending ? "Enregistrement..." : "Enregistrer le versement"}
+        {pending ? "Enregistrement..." : submitLabel}
       </button>
     </form>
   );

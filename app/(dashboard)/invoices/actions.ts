@@ -162,6 +162,47 @@ export async function recordPayment(invoiceId: string, formData: FormData) {
   revalidatePath("/invoices");
 }
 
+export async function updatePayment(invoiceId: string, paymentId: string, formData: FormData) {
+  const profile = await getCurrentProfile();
+  if (!profile.schoolId) return { error: "Aucune école rattachée à ton compte." };
+
+  const invoice = await getOwnedInvoice(invoiceId, profile.schoolId);
+  if (!invoice) return { error: "Facture introuvable." };
+
+  const [existingPayment] = await db
+    .select({ id: payments.id })
+    .from(payments)
+    .where(and(eq(payments.id, paymentId), eq(payments.invoiceId, invoiceId)));
+  if (!existingPayment) return { error: "Versement introuvable." };
+
+  const amountRaw = String(formData.get("amount") ?? "").trim();
+  const method = String(formData.get("method") ?? "").trim();
+  const reference = String(formData.get("reference") ?? "").trim();
+  const amount = Number(amountRaw);
+
+  if (!Number.isFinite(amount) || amount <= 0) {
+    return { error: "Montant de versement invalide." };
+  }
+  if (!PAYMENT_METHOD_VALUES.includes(method)) {
+    return { error: "Moyen de paiement invalide." };
+  }
+
+  await db
+    .update(payments)
+    .set({
+      amount: amountRaw,
+      method,
+      reference: reference || null,
+    })
+    .where(and(eq(payments.id, paymentId), eq(payments.invoiceId, invoiceId)));
+
+  await recalculateStatus(invoiceId, Number(invoice.amount), invoice.dueDate);
+
+  revalidatePath(`/invoices/${invoiceId}`);
+  revalidatePath("/invoices");
+  redirect(`/invoices/${invoiceId}`);
+}
+
 export async function deletePayment(invoiceId: string, paymentId: string) {
   const profile = await getCurrentProfile();
   if (!profile.schoolId) return { error: "Aucune école rattachée à ton compte." };
