@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { PAYMENT_METHODS } from "@/lib/constants";
+import { Btn } from "@/components/shared/btn";
 
 export function PaymentForm({
   maxAmount,
@@ -37,7 +38,7 @@ export function PaymentForm({
       )}
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1">
-          <label htmlFor="amount" className="text-sm font-medium">
+          <label htmlFor="amount" className="text-sm font-medium text-zinc-700">
             Montant (FCFA)
           </label>
           <input
@@ -49,11 +50,11 @@ export function PaymentForm({
             step="1"
             required
             defaultValue={defaultValues?.amount ?? maxAmount}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+            className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
           />
         </div>
         <div className="space-y-1">
-          <label htmlFor="method" className="text-sm font-medium">
+          <label htmlFor="method" className="text-sm font-medium text-zinc-700">
             Moyen de paiement
           </label>
           <select
@@ -61,7 +62,7 @@ export function PaymentForm({
             name="method"
             required
             defaultValue={defaultValues?.method ?? ""}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+            className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
           >
             <option value="" disabled>
               — Sélectionner —
@@ -75,7 +76,7 @@ export function PaymentForm({
         </div>
       </div>
       <div className="space-y-1">
-        <label htmlFor="reference" className="text-sm font-medium">
+        <label htmlFor="reference" className="text-sm font-medium text-zinc-700">
           Référence (optionnel)
         </label>
         <input
@@ -83,16 +84,12 @@ export function PaymentForm({
           name="reference"
           placeholder="ex: référence de transaction Wave"
           defaultValue={defaultValues?.reference ?? ""}
-          className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+          className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
         />
       </div>
-      <button
-        type="submit"
-        disabled={pending}
-        className="rounded-lg bg-zinc-900 px-4 py-2.5 text-sm font-medium text-white disabled:opacity-60"
-      >
+      <Btn type="submit" disabled={pending} variant="amber">
         {pending ? "Enregistrement..." : submitLabel}
-      </button>
+      </Btn>
     </form>
   );
 }

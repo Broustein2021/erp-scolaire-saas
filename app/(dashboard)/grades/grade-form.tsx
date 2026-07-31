@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { Btn } from "@/components/shared/btn";
 
 type StudentOption = { id: string; label: string };
 
@@ -35,14 +36,14 @@ export function GradeForm({
           if (result?.error) setError(result.error);
         });
       }}
-      className="max-w-lg space-y-4 rounded-2xl border bg-white p-8 shadow-sm"
+      className="max-w-lg space-y-4 rounded-2xl border border-cream-dark bg-white p-8 shadow-sm"
     >
       {error && (
         <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
       )}
 
       <div className="space-y-1">
-        <label htmlFor="studentId" className="text-sm font-medium">
+        <label htmlFor="studentId" className="text-sm font-medium text-zinc-700">
           Élève
         </label>
         <select
@@ -50,7 +51,7 @@ export function GradeForm({
           name="studentId"
           required
           defaultValue={defaultValues?.studentId ?? ""}
-          className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+          className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
         >
           <option value="" disabled>
             — Sélectionner —
@@ -65,7 +66,7 @@ export function GradeForm({
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-1">
-          <label htmlFor="subject" className="text-sm font-medium">
+          <label htmlFor="subject" className="text-sm font-medium text-zinc-700">
             Matière
           </label>
           <input
@@ -74,11 +75,11 @@ export function GradeForm({
             required
             placeholder="ex: Mathématiques"
             defaultValue={defaultValues?.subject}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+            className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
           />
         </div>
         <div className="space-y-1">
-          <label htmlFor="term" className="text-sm font-medium">
+          <label htmlFor="term" className="text-sm font-medium text-zinc-700">
             Période
           </label>
           <input
@@ -87,14 +88,14 @@ export function GradeForm({
             required
             placeholder="ex: Trimestre 1"
             defaultValue={defaultValues?.term}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+            className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
           />
         </div>
       </div>
 
       <div className="grid grid-cols-3 gap-4">
         <div className="space-y-1">
-          <label htmlFor="score" className="text-sm font-medium">
+          <label htmlFor="score" className="text-sm font-medium text-zinc-700">
             Note /20
           </label>
           <input
@@ -106,11 +107,11 @@ export function GradeForm({
             step="0.01"
             required
             defaultValue={defaultValues?.score}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+            className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
           />
         </div>
         <div className="space-y-1">
-          <label htmlFor="classAverage" className="text-sm font-medium">
+          <label htmlFor="classAverage" className="text-sm font-medium text-zinc-700">
             Moy. classe
           </label>
           <input
@@ -121,11 +122,11 @@ export function GradeForm({
             max="20"
             step="0.01"
             defaultValue={defaultValues?.classAverage ?? ""}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+            className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
           />
         </div>
         <div className="space-y-1">
-          <label htmlFor="rank" className="text-sm font-medium">
+          <label htmlFor="rank" className="text-sm font-medium text-zinc-700">
             Rang
           </label>
           <input
@@ -135,13 +136,13 @@ export function GradeForm({
             min="1"
             step="1"
             defaultValue={defaultValues?.rank ?? ""}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+            className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
           />
         </div>
       </div>
 
       <div className="space-y-1">
-        <label htmlFor="remark" className="text-sm font-medium">
+        <label htmlFor="remark" className="text-sm font-medium text-zinc-700">
           Appréciation
         </label>
         <input
@@ -149,17 +150,13 @@ export function GradeForm({
           name="remark"
           placeholder="ex: Bon travail"
           defaultValue={defaultValues?.remark ?? ""}
-          className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+          className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
         />
       </div>
 
-      <button
-        type="submit"
-        disabled={pending}
-        className="w-full rounded-lg bg-zinc-900 py-2.5 text-sm font-medium text-white disabled:opacity-60"
-      >
+      <Btn type="submit" disabled={pending} variant="primary" fullWidth>
         {pending ? "Enregistrement..." : submitLabel}
-      </button>
+      </Btn>
     </form>
   );
 }

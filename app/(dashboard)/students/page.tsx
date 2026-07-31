@@ -1,8 +1,10 @@
-import Link from "next/link";
 import { eq } from "drizzle-orm";
+import { UserPlus, Users } from "lucide-react";
 import { getCurrentProfile } from "@/lib/auth/profile";
 import { db } from "@/lib/db";
 import { students, classes } from "@/lib/db/schema";
+import { SectionHeader } from "@/components/shared/section-header";
+import { Btn } from "@/components/shared/btn";
 import { DeleteStudentButton } from "./delete-button";
 
 export default async function StudentsPage() {
@@ -23,50 +25,74 @@ export default async function StudentsPage() {
     : [];
 
   return (
-    <main className="mx-auto max-w-3xl p-8 space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Élèves</h1>
-        <Link
-          href="/students/new"
-          className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white"
-        >
-          + Ajouter un élève
-        </Link>
-      </div>
+    <div className="space-y-5 p-6">
+      <SectionHeader
+        title="Élèves"
+        subtitle={`${rows.length} élève${rows.length > 1 ? "s" : ""} inscrit${rows.length > 1 ? "s" : ""}`}
+      >
+        <Btn variant="primary" icon={<UserPlus size={14} />} href="/students/new">
+          Ajouter un élève
+        </Btn>
+      </SectionHeader>
 
-      {rows.length === 0 ? (
-        <p className="text-sm text-zinc-500">Aucun élève enregistré pour l&apos;instant.</p>
-      ) : (
-        <div className="overflow-hidden rounded-lg border">
+      <div className="overflow-hidden rounded-2xl border border-cream-dark bg-white shadow-sm">
+        <div className="border-b border-cream-dark px-5 py-4">
+          <div className="font-semibold text-zinc-900">Liste des élèves</div>
+        </div>
+        {rows.length === 0 ? (
+          <div className="px-6 py-10 text-center text-sm text-zinc-400">
+            <Users className="mx-auto mb-3 h-8 w-8 opacity-30" />
+            Aucun élève enregistré pour l&apos;instant.
+          </div>
+        ) : (
           <table className="w-full text-sm">
-            <thead className="bg-zinc-50 text-left text-zinc-500">
-              <tr>
-                <th className="px-4 py-2 font-medium">Nom</th>
-                <th className="px-4 py-2 font-medium">Matricule</th>
-                <th className="px-4 py-2 font-medium">Classe</th>
-                <th className="px-4 py-2 font-medium"></th>
+            <thead>
+              <tr className="bg-cream text-left text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                <th className="px-5 py-3">Élève</th>
+                <th className="px-5 py-3">Matricule</th>
+                <th className="px-5 py-3">Classe</th>
+                <th className="px-5 py-3"></th>
               </tr>
             </thead>
-            <tbody className="divide-y">
-              {rows.map((s) => (
-                <tr key={s.id}>
-                  <td className="px-4 py-2">
-                    {s.lastName.toUpperCase()} {s.firstName}
+            <tbody>
+              {rows.map((s, i) => (
+                <tr key={s.id} className={`border-t border-cream ${i % 2 === 1 ? "bg-cream/30" : "bg-white"}`}>
+                  <td className="px-5 py-3.5">
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-forest-faint text-xs font-bold text-forest">
+                        {s.firstName[0]}
+                        {s.lastName[0]}
+                      </div>
+                      <span className="text-sm font-semibold text-zinc-900">
+                        {s.lastName.toUpperCase()} {s.firstName}
+                      </span>
+                    </div>
                   </td>
-                  <td className="px-4 py-2 text-zinc-500">{s.matricule ?? "—"}</td>
-                  <td className="px-4 py-2 text-zinc-500">{s.className ?? "—"}</td>
-                  <td className="px-4 py-2 text-right space-x-3">
-                    <Link href={`/students/${s.id}`} className="text-zinc-700 underline">
+                  <td className="px-5 py-3.5 text-zinc-500">{s.matricule ?? "—"}</td>
+                  <td className="px-5 py-3.5">
+                    {s.className ? (
+                      <span className="rounded-full bg-forest-faint px-2 py-0.5 text-xs text-forest">
+                        {s.className}
+                      </span>
+                    ) : (
+                      <span className="text-sm text-zinc-400">—</span>
+                    )}
+                  </td>
+                  <td className="px-5 py-3.5 text-right space-x-3">
+                    <a href={`/students/${s.id}`} className="text-zinc-700 underline">
                       Modifier
-                    </Link>
+                    </a>
+                    <a href={`/students/${s.id}/bulletin`} className="text-zinc-700 underline">
+                      Bulletin
+                    </a>
                     <DeleteStudentButton studentId={s.id} />
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </div>
-      )}
-    </main>
+        )}
+      </div>
+    </div>
   );
 }

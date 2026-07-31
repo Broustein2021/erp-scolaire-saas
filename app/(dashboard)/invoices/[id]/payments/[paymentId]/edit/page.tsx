@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { and, eq } from "drizzle-orm";
 import { getCurrentProfile } from "@/lib/auth/profile";
 import { db } from "@/lib/db";
 import { invoices, payments, students } from "@/lib/db/schema";
+import { BackButton } from "@/components/shared/back-button";
 import { PaymentForm } from "../../../payment-form";
 import { updatePayment } from "../../../../actions";
 
@@ -38,12 +38,10 @@ export default async function EditPaymentPage({
   const maxAmount = Number(invoice.amount) - otherPaid;
 
   return (
-    <main className="mx-auto max-w-lg space-y-6 p-8">
-      <Link href={`/invoices/${id}`} className="text-sm text-zinc-500 underline">
-        ← Retour à la facture
-      </Link>
-      <div className="rounded-2xl border bg-white p-6 shadow-sm space-y-4">
-        <h1 className="text-xl font-semibold">Modifier le versement</h1>
+    <div className="mx-auto max-w-lg space-y-6 p-6">
+      <BackButton href={`/invoices/${id}`} label="Retour à la facture" />
+      <div className="space-y-4 rounded-2xl border border-cream-dark bg-white p-6 shadow-sm">
+        <h1 className="text-xl font-bold text-zinc-900">Modifier le versement</h1>
         <PaymentForm
           maxAmount={maxAmount}
           defaultValues={{
@@ -55,6 +53,6 @@ export default async function EditPaymentPage({
           onSubmit={updatePayment.bind(null, id, paymentId)}
         />
       </div>
-    </main>
+    </div>
   );
 }

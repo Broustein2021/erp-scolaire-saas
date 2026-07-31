@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { Btn } from "@/components/shared/btn";
 
 export function ClassForm({
   defaultValues,
@@ -23,14 +24,14 @@ export function ClassForm({
           if (result?.error) setError(result.error);
         });
       }}
-      className="max-w-lg space-y-4 rounded-2xl border bg-white p-8 shadow-sm"
+      className="max-w-lg space-y-4 rounded-2xl border border-cream-dark bg-white p-8 shadow-sm"
     >
       {error && (
         <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
       )}
 
       <div className="space-y-1">
-        <label htmlFor="name" className="text-sm font-medium">
+        <label htmlFor="name" className="text-sm font-medium text-zinc-700">
           Nom de la classe
         </label>
         <input
@@ -39,13 +40,13 @@ export function ClassForm({
           required
           placeholder="Ex: CP1 A"
           defaultValue={defaultValues?.name}
-          className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+          className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
         />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-1">
-          <label htmlFor="level" className="text-sm font-medium">
+          <label htmlFor="level" className="text-sm font-medium text-zinc-700">
             Niveau
           </label>
           <input
@@ -54,11 +55,11 @@ export function ClassForm({
             required
             placeholder="Ex: CP1, 6e, Terminale"
             defaultValue={defaultValues?.level}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+            className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
           />
         </div>
         <div className="space-y-1">
-          <label htmlFor="academicYear" className="text-sm font-medium">
+          <label htmlFor="academicYear" className="text-sm font-medium text-zinc-700">
             Année scolaire
           </label>
           <input
@@ -67,18 +68,14 @@ export function ClassForm({
             required
             placeholder="Ex: 2025-2026"
             defaultValue={defaultValues?.academicYear}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+            className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
           />
         </div>
       </div>
 
-      <button
-        type="submit"
-        disabled={pending}
-        className="w-full rounded-lg bg-zinc-900 py-2.5 text-sm font-medium text-white disabled:opacity-60"
-      >
+      <Btn type="submit" disabled={pending} variant="primary" fullWidth>
         {pending ? "Enregistrement..." : submitLabel}
-      </button>
+      </Btn>
     </form>
   );
 }

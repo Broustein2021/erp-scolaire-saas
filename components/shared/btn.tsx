@@ -15,6 +15,8 @@ export function Btn({
   href,
   onClick,
   type = "button",
+  disabled,
+  fullWidth,
 }: {
   children: ReactNode;
   icon?: ReactNode;
@@ -23,10 +25,12 @@ export function Btn({
   href?: string;
   onClick?: () => void;
   type?: "button" | "submit";
+  disabled?: boolean;
+  fullWidth?: boolean;
 }) {
-  const classes = `inline-flex items-center gap-1.5 rounded-lg font-medium transition-colors ${
-    small ? "px-2.5 py-1 text-xs" : "px-3.5 py-2 text-sm"
-  } ${VARIANTS[variant]}`;
+  const classes = `inline-flex items-center gap-1.5 rounded-lg font-medium transition-colors disabled:opacity-60 disabled:pointer-events-none ${
+    fullWidth ? "w-full justify-center" : ""
+  } ${small ? "px-2.5 py-1 text-xs" : "px-3.5 py-2 text-sm"} ${VARIANTS[variant]}`;
 
   if (href) {
     return (
@@ -38,7 +42,7 @@ export function Btn({
   }
 
   return (
-    <button type={type} onClick={onClick} className={classes}>
+    <button type={type} onClick={onClick} disabled={disabled} className={classes}>
       {icon}
       {children}
     </button>

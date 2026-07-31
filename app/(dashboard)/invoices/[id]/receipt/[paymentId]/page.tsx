@@ -1,10 +1,10 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { and, eq } from "drizzle-orm";
 import { getCurrentProfile } from "@/lib/auth/profile";
 import { db } from "@/lib/db";
 import { invoices, payments, students, schools } from "@/lib/db/schema";
 import { PAYMENT_METHODS } from "@/lib/constants";
+import { BackButton } from "@/components/shared/back-button";
 import { PrintButton } from "./print-button";
 
 function fmt(n: number) {
@@ -61,20 +61,18 @@ export default async function ReceiptPage({
   });
 
   return (
-    <main className="mx-auto max-w-lg p-8 space-y-6">
+    <div className="mx-auto max-w-lg space-y-6 p-6">
       {/* Zone non imprimée */}
       <div className="print:hidden flex items-center justify-between">
-        <Link href={`/invoices/${row.invoiceId}`} className="text-sm text-zinc-500 underline">
-          ← Retour à la facture
-        </Link>
+        <BackButton href={`/invoices/${row.invoiceId}`} label="Retour à la facture" />
         <PrintButton />
       </div>
 
       {/* Reçu */}
-      <article className="rounded-2xl border bg-white p-8 shadow-sm space-y-6 print:border-0 print:shadow-none">
-        <header className="text-center space-y-1 border-b pb-4">
-          <p className="text-xs uppercase tracking-wide text-zinc-500">Reçu de paiement</p>
-          <h1 className="text-xl font-semibold">{row.schoolName}</h1>
+      <article className="space-y-6 rounded-2xl border border-cream-dark bg-white p-8 shadow-sm print:border-0 print:shadow-none">
+        <header className="space-y-1 border-b border-cream-dark pb-4 text-center">
+          <p className="text-xs uppercase tracking-wide text-amber">Reçu de paiement</p>
+          <h1 className="text-xl font-bold text-forest-dark">{row.schoolName}</h1>
           {row.schoolCity && (
             <p className="text-sm text-zinc-500">{row.schoolCity}</p>
           )}
@@ -91,7 +89,7 @@ export default async function ReceiptPage({
           </div>
         </section>
 
-        <section className="space-y-2 text-sm border-t pt-4">
+        <section className="space-y-2 text-sm border-t border-cream-dark pt-4">
           <div className="flex justify-between">
             <span className="text-zinc-500">Élève</span>
             <span className="font-medium">
@@ -110,7 +108,7 @@ export default async function ReceiptPage({
           </div>
         </section>
 
-        <section className="rounded-xl bg-zinc-50 p-4 space-y-2 text-sm print:bg-transparent print:border">
+        <section className="space-y-2 rounded-xl bg-forest-faint p-4 text-sm print:border print:bg-transparent">
           <div className="flex justify-between">
             <span className="text-zinc-500">Montant versé</span>
             <span className="text-lg font-semibold font-mono">
@@ -127,16 +125,16 @@ export default async function ReceiptPage({
               <span className="font-mono text-xs">{row.reference}</span>
             </div>
           )}
-          <div className="flex justify-between border-t pt-2">
+          <div className="flex justify-between border-t border-cream-dark pt-2">
             <span className="text-zinc-500">Montant facture</span>
             <span className="font-mono">{fmt(Number(row.invoiceAmount))}</span>
           </div>
         </section>
 
-        <footer className="text-center text-xs text-zinc-400 border-t pt-4">
+        <footer className="text-center text-xs text-zinc-400 border-t border-cream-dark pt-4">
           Document généré automatiquement — conserver ce reçu comme preuve de paiement.
         </footer>
       </article>
-    </main>
+    </div>
   );
 }

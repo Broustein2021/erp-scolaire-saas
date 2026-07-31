@@ -1,10 +1,9 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { and, eq } from "drizzle-orm";
-import { ArrowLeft } from "lucide-react";
 import { getCurrentProfile } from "@/lib/auth/profile";
 import { db } from "@/lib/db";
 import { students, grades, schools } from "@/lib/db/schema";
+import { BackButton } from "@/components/shared/back-button";
 import { PrintButton } from "./print-button";
 
 export default async function BulletinPage({
@@ -41,12 +40,7 @@ export default async function BulletinPage({
   return (
     <main className="mx-auto max-w-2xl space-y-6 p-8">
       <div className="flex items-center justify-between print:hidden">
-        <Link
-          href={`/students/${id}`}
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900"
-        >
-          <ArrowLeft className="h-4 w-4" /> Retour à la fiche élève
-        </Link>
+        <BackButton href={`/students/${id}`} label="Retour à la fiche élève" />
         <PrintButton />
       </div>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { Btn } from "@/components/shared/btn";
 
 type ClassOption = { id: string; name: string };
 
@@ -33,7 +34,7 @@ export function StudentForm({
           if (result?.error) setError(result.error);
         });
       }}
-      className="max-w-lg space-y-4 rounded-2xl border bg-white p-8 shadow-sm"
+      className="max-w-lg space-y-4 rounded-2xl border border-cream-dark bg-white p-8 shadow-sm"
     >
       {error && (
         <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
@@ -41,7 +42,7 @@ export function StudentForm({
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-1">
-          <label htmlFor="firstName" className="text-sm font-medium">
+          <label htmlFor="firstName" className="text-sm font-medium text-zinc-700">
             Prénom
           </label>
           <input
@@ -49,11 +50,11 @@ export function StudentForm({
             name="firstName"
             required
             defaultValue={defaultValues?.firstName}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+            className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
           />
         </div>
         <div className="space-y-1">
-          <label htmlFor="lastName" className="text-sm font-medium">
+          <label htmlFor="lastName" className="text-sm font-medium text-zinc-700">
             Nom
           </label>
           <input
@@ -61,14 +62,14 @@ export function StudentForm({
             name="lastName"
             required
             defaultValue={defaultValues?.lastName}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+            className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
           />
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-1">
-          <label htmlFor="birthDate" className="text-sm font-medium">
+          <label htmlFor="birthDate" className="text-sm font-medium text-zinc-700">
             Date de naissance
           </label>
           <input
@@ -76,31 +77,31 @@ export function StudentForm({
             name="birthDate"
             type="date"
             defaultValue={defaultValues?.birthDate ?? ""}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+            className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
           />
         </div>
         <div className="space-y-1">
-          <label htmlFor="matricule" className="text-sm font-medium">
+          <label htmlFor="matricule" className="text-sm font-medium text-zinc-700">
             Matricule
           </label>
           <input
             id="matricule"
             name="matricule"
             defaultValue={defaultValues?.matricule ?? ""}
-            className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+            className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
           />
         </div>
       </div>
 
       <div className="space-y-1">
-        <label htmlFor="classId" className="text-sm font-medium">
+        <label htmlFor="classId" className="text-sm font-medium text-zinc-700">
           Classe
         </label>
         <select
           id="classId"
           name="classId"
           defaultValue={defaultValues?.classId ?? ""}
-          className="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-zinc-400"
+          className="w-full rounded-lg border border-cream-dark px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-forest/40"
         >
           <option value="">— Aucune —</option>
           {classOptions.map((c) => (
@@ -110,19 +111,15 @@ export function StudentForm({
           ))}
         </select>
         {classOptions.length === 0 && (
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-zinc-400">
             Aucune classe créée pour l&apos;instant — l&apos;élève peut être ajouté sans classe.
           </p>
         )}
       </div>
 
-      <button
-        type="submit"
-        disabled={pending}
-        className="w-full rounded-lg bg-zinc-900 py-2.5 text-sm font-medium text-white disabled:opacity-60"
-      >
+      <Btn type="submit" disabled={pending} variant="primary" fullWidth>
         {pending ? "Enregistrement..." : submitLabel}
-      </button>
+      </Btn>
     </form>
   );
 }
