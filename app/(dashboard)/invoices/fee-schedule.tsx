@@ -42,7 +42,11 @@ export function FeeSchedule({ rows }: { rows: FeeRow[] }) {
                     <td className="px-5 py-2.5 text-right font-mono text-zinc-900">{fmt(Number(r.amount))} FCFA</td>
                     <td className="w-10 px-3 py-2.5 text-right">
                       <button
-                        onClick={() => startTransition(() => deleteFeeRow(r.id))}
+                        onClick={() =>
+                          startTransition(() => {
+                            void deleteFeeRow(r.id);
+                          })
+                        }
                         className="text-zinc-300 hover:text-red-600"
                       >
                         <Trash2 size={14} />
