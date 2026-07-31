@@ -192,7 +192,7 @@ export default async function DashboardPage() {
         <div className="rounded-2xl border border-cream-dark bg-white p-5 shadow-sm lg:col-span-3">
           <div className="mb-4">
             <div className="font-semibold text-zinc-900">Revenus par classe</div>
-            <div className="mt-0.5 text-xs text-zinc-400">Cumul de l'année</div>
+            <div className="mt-0.5 text-xs text-zinc-400">Cumul de l&apos;année</div>
           </div>
           {revenueByClass.length > 0 ? (
             <RevenueByClassChart data={revenueByClass} />

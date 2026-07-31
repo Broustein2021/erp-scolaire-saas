@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { and, eq } from "drizzle-orm";
-import { ArrowLeft, Printer } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { getCurrentProfile } from "@/lib/auth/profile";
 import { db } from "@/lib/db";
 import { students, grades, schools } from "@/lib/db/schema";
