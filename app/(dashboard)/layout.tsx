@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import { getCurrentProfile } from "@/lib/auth/profile";
 import { db } from "@/lib/db";
 import { schools } from "@/lib/db/schema";
-import { Sidebar } from "@/components/layout/sidebar";
+import { Sidebar, BottomNav } from "@/components/layout/sidebar";
 
 export default async function DashboardGroupLayout({
   children,
@@ -23,7 +23,8 @@ export default async function DashboardGroupLayout({
   return (
     <div className="flex h-screen bg-cream">
       <Sidebar schoolName={schoolName} />
-      <div className="flex-1 overflow-y-auto">{children}</div>
+      <div className="flex-1 overflow-y-auto pb-16 md:pb-0">{children}</div>
+      <BottomNav />
     </div>
   );
 }
